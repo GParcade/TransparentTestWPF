@@ -1,0 +1,108 @@
+﻿<Window x:Class="WpfApp1.CalculatorView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Calculator" MinHeight="448.956" MinWidth="273.205" Height="448.956" Width="273.205" Name="WindowsMain" Deactivated="WindowsMain_Deactivated" Activated="WindowsMain_Activated" AllowsTransparency="True" WindowStyle="None" ResizeMode="CanResizeWithGrip" SizeChanged="WindowsMain_SizeChanged">
+    <Window.Resources>
+        <Style x:Key="NumPad" TargetType="Button">
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="Opacity" Value="0.8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Background" Value="#e6e6e6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="OpPad" TargetType="Button">
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="Opacity" Value="0.7"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="Background" Value="#FFF7F7F7"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" MouseDown="Grid_MouseDown" Background="LightGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+            <Label MouseDoubleClick="MaxMin"></Label>
+            <Label MouseDoubleClick="MaxMin" Grid.Column="1">
+                <Ellipse Width="20" Height="20" Fill="LightGoldenrodYellow" MouseDown="Hide"/>
+            </Label>
+            <Label MouseDoubleClick="MaxMin" Grid.Column="2" Width="40" Height="40">
+                <Ellipse Width="20" Height="20" Fill="Orange" MouseDown="MaxMin"/>
+            </Label>
+            <Label MouseDoubleClick="MaxMin" Grid.Column="3" Width="40" Height="40">
+                <Ellipse Width="20" Height="20" Fill="Red" MouseDown="Close"/>
+            </Label>
+        </Grid>
+        <Grid Grid.Row="1" Name="MainContent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100*"/>
+                <RowDefinition Height="41*"/>
+                <RowDefinition Height="73*"/>
+                <RowDefinition Height="73*"/>
+                <RowDefinition Height="73*"/>
+                <RowDefinition Height="73*"/>
+                <RowDefinition Height="73*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Name="AutoFontSizeAlgo" Margin="1" Grid.Row="0" Grid.ColumnSpan="4" TextWrapping="Wrap" Text="{Binding Path=CalcAlgo, Mode=TwoWay}" Background="Transparent"/>
+            <TextBlock Name="AutoFontSizeValue" Margin="1" Grid.Row="1" Grid.ColumnSpan="4" FontWeight="Bold" Text="{Binding Path=CalcValue, Mode=TwoWay}" Background="Transparent"/>
+
+            <Button Style="{StaticResource OpPad}" Grid.Row="2" Command="{Binding NumberOperation}" CommandParameter="CE">CE</Button>
+            <Button Style="{StaticResource NumPad}" Grid.Row="3" Command="{Binding NumberOperation}" CommandParameter="7">7</Button>
+            <Button Style="{StaticResource NumPad}" Grid.Row="4" Command="{Binding NumberOperation}" CommandParameter="4">4</Button>
+            <Button Style="{StaticResource NumPad}" Grid.Row="5" Command="{Binding NumberOperation}" CommandParameter="1">1</Button>
+            <Button Style="{StaticResource OpPad}" Grid.Row="6" IsEnabled="{Binding Path=DotAviable, Mode=TwoWay}" Command="{Binding NumberOperation}" CommandParameter=",">,</Button>
+
+            <Button Style="{StaticResource OpPad}" Grid.Column="1" Grid.Row="2" Command="{Binding NumberOperation}" CommandParameter="C">C</Button>
+            <Button Style="{StaticResource NumPad}" Grid.Column="1" Grid.Row="3" Command="{Binding NumberOperation}" CommandParameter="8">8</Button>
+            <Button Style="{StaticResource NumPad}" Grid.Column="1" Grid.Row="4" Command="{Binding NumberOperation}" CommandParameter="5">5</Button>
+            <Button Style="{StaticResource NumPad}" Grid.Column="1" Grid.Row="5" Command="{Binding NumberOperation}" CommandParameter="2">2</Button>
+            <Button Style="{StaticResource NumPad}" Grid.Column="1" Grid.Row="6" Command="{Binding NumberOperation}" CommandParameter="0">0</Button>
+
+            <Button Style="{StaticResource OpPad}" Grid.Column="2" Grid.Row="2" Command="{Binding NumberOperation}" CommandParameter="&lt;" Content="&lt;"/>
+            <Button Style="{StaticResource NumPad}" Grid.Column="2" Grid.Row="3" Command="{Binding NumberOperation}" CommandParameter="9">9</Button>
+            <Button Style="{StaticResource NumPad}" Grid.Column="2" Grid.Row="4" Command="{Binding NumberOperation}" CommandParameter="6">6</Button>
+            <Button Style="{StaticResource NumPad}" Grid.Column="2" Grid.Row="5" Command="{Binding NumberOperation}" CommandParameter="3">3</Button>
+
+            <Button Style="{StaticResource OpPad}" Grid.Row="2" Grid.Column="3" Command="{Binding NumberOperation}" CommandParameter="/">/</Button>
+            <Button Style="{StaticResource OpPad}" Grid.Row="3" Grid.Column="3" Command="{Binding NumberOperation}" CommandParameter="*">*</Button>
+            <Button Style="{StaticResource OpPad}" Grid.Row="4" Grid.Column="3" Command="{Binding NumberOperation}" CommandParameter="-">-</Button>    
+            <Button Style="{StaticResource OpPad}" Grid.Row="5" Grid.Column="3" Command="{Binding NumberOperation}" CommandParameter="+">+</Button>
+
+            <Button Style="{StaticResource OpPad}" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" Command="{Binding ResultRequest}">=</Button>
+        </Grid>
+    </Grid>
+</Window>
+
